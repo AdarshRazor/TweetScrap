@@ -28,7 +28,6 @@ f1 = askdirectory()
 #limit  = 1000
 #lang = 'en'
 #user=realDonaldTrump
-#hashtag='coronavirus'
 
 hashtag=askstring("Hashtag","Enter the hashtag : ")
 limit=askinteger("limit","Enter the limit : ")
@@ -46,6 +45,6 @@ tweets=query_tweets(hashtag, begindate = begin_date, enddate = end_date, limit=l
 dc = pd.DataFrame(t.__dict__ for t in tweets)
 df=pd.DataFrame(dc, columns=['screen_name', 'username', 'text', 'hashtags'])
 file = f1+r"\%s.xlsx"%hashtag
-export_excel=df.to_excel (file)
+export_excel=df[~df.duplicated(subset=['text'])].to_excel (file) #removing the duplicate texts
 os.startfile(file)
 print (df)
